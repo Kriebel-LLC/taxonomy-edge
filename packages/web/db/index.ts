@@ -6,7 +6,7 @@ const connection = connect({
   host: env.DATABASE_HOST,
   username: env.DATABASE_USERNAME,
   password: env.DATABASE_PASSWORD,
-  // removes the `cache` header, which breaks cloudflare workers; remove this ASAP
+  // removes the `cache` header, which breaks cloudflare workers; remove this as soon as possible after fixed
   // for details: https://github.com/cloudflare/workerd/issues/698#issue-1723641854
   fetch: (url, init) => {
     delete (init as any)["cache"]; // Remove cache header

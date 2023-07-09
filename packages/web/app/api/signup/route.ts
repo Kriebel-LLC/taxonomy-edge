@@ -9,7 +9,7 @@ import { setAuthCookies } from "next-firebase-auth-edge/lib/next/cookies";
 export const runtime = "edge";
 
 // special function so we can getOrCreateUserRecord in DB rather than just adding cookies
-export async function POST(req: Request) {
+export async function GET(req: Request) {
   const token = getAuthorizationTokenFromHeader(req.headers);
   if (!token) {
     return new Response(null, { status: 401 });

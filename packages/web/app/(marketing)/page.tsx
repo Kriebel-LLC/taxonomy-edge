@@ -9,7 +9,7 @@ export const runtime = "edge";
 async function getGitHubStars(): Promise<string | null> {
   try {
     const response = await fetch(
-      "https://api.github.com/repos/shadcn/taxonomy",
+      "https://api.github.com/repos/Kriebel-LLC/taxonomy-edge",
       {
         headers: {
           Accept: "application/vnd.github+json",
@@ -117,7 +117,7 @@ export default async function IndexPage() {
               <div className="space-y-2">
                 <h3 className="font-bold">Database</h3>
                 <p className="text-sm text-muted-foreground">
-                  ORM using Prisma and deployed on PlanetScale.
+                  ORM using Drizzle and deployed on PlanetScale.
                 </p>
               </div>
             </div>
@@ -150,7 +150,7 @@ export default async function IndexPage() {
               <div className="space-y-2">
                 <h3 className="font-bold">Authentication</h3>
                 <p className="text-sm text-muted-foreground">
-                  Authentication using NextAuth.js and middlewares.
+                  Authentication using Firebase Auth and middlewares.
                 </p>
               </div>
             </div>
@@ -172,7 +172,7 @@ export default async function IndexPage() {
         <div className="mx-auto text-center md:max-w-[58rem]">
           <p className="leading-normal text-muted-foreground sm:text-lg sm:leading-7">
             Taxonomy also includes a blog and a full-featured documentation site
-            built using Contentlayer and MDX.
+            built using next/mdx and MDX.
           </p>
         </div>
       </section>

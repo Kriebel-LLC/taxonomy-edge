@@ -17,14 +17,14 @@ import {
   sendSignInLinkToEmail,
   isSignInWithEmailLink,
   signInWithEmailLink,
-  GoogleAuthProvider,
+  GithubAuthProvider,
   signInWithPopup,
   getAdditionalUserInfo,
   UserCredential,
 } from "firebase/auth";
 import { auth } from "@/lib/firebase";
 
-const provider = new GoogleAuthProvider();
+const provider = new GithubAuthProvider();
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
@@ -41,7 +41,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
     resolver: zodResolver(userAuthSchema),
   });
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
-  const [isGoogleLoading, setIsGoogleLoading] = React.useState<boolean>(false);
+  const [isGithubLoading, setIsGithubLoading] = React.useState<boolean>(false);
 
   const completeSignIn = async (result: UserCredential) => {
     const idToken = await result.user.getIdToken();
@@ -138,7 +138,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
               autoCapitalize="none"
               autoComplete="email"
               autoCorrect="off"
-              disabled={isLoading || isGoogleLoading}
+              disabled={isLoading || isGithubLoading}
               {...register("email")}
             />
             {errors?.email && (
@@ -169,18 +169,14 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
         type="button"
         className={cn(buttonVariants({ variant: "outline" }))}
         onClick={() => {
-          setIsGoogleLoading(true);
+          setIsGithubLoading(true);
           signInWithPopup(auth, provider)
             .then(async (result) => {
-              // This gives you a Google Access Token. You can use it to access the Google API.
-              // const credential =
-              //   GoogleAuthProvider.credentialFromResult(result);
-              // const token = credential.accessToken;
-              // IdP data available using getAdditionalUserInfo(result)
+              // This gives you a GitHub Access Token. You can use it to access the GitHub API.
+              // const credential = GithubAuthProvider.credentialFromResult(result);
               await completeSignIn(result);
             })
             .catch((error) => {
-              const errorCode = error.code;
               const errorMessage = error.message;
               toast({
                 title: "Something went wrong.",
@@ -188,16 +184,16 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
                 variant: "destructive",
               });
             })
-            .finally(() => setIsGoogleLoading(false));
+            .finally(() => setIsGithubLoading(false));
         }}
-        disabled={isLoading || isGoogleLoading}
+        disabled={isLoading || isGithubLoading}
       >
-        {isGoogleLoading ? (
+        {isGithubLoading ? (
           <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
         ) : (
-          <Icons.google className="mr-2 h-4 w-4" />
+          <Icons.gitHub className="mr-2 h-4 w-4" />
         )}{" "}
-        Google
+        Github
       </button>
     </div>
   );

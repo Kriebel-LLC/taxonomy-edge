@@ -20,15 +20,24 @@ export function SiteFooter({ className }: React.HTMLAttributes<HTMLElement>) {
               className="font-medium underline underline-offset-4"
             >
               shadcn
-            </a>
-            . Hosted on{" "}
+            </a>{" "}
+            and adapted for edge runtime by{" "}
             <a
-              href="https://vercel.com"
+              href="https://aleckriebel.com"
               target="_blank"
               rel="noreferrer"
               className="font-medium underline underline-offset-4"
             >
-              Vercel
+              Kriebel LLC
+            </a>
+            . Hosted on{" "}
+            <a
+              href="https://pages.cloudflare.com/"
+              target="_blank"
+              rel="noreferrer"
+              className="font-medium underline underline-offset-4"
+            >
+              Cloudflare Pages
             </a>
             . Illustrations by{" "}
             <a

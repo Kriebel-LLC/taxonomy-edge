@@ -36,11 +36,17 @@ export const metadata = {
     "Tailwind CSS",
     "Server Components",
     "Radix UI",
+    "edge runtime",
+    "cloudflare pages",
   ],
   authors: [
     {
       name: "shadcn",
       url: "https://shadcn.com",
+    },
+    {
+      name: "Kriebel LLC.",
+      url: "https://aleckriebel.com",
     },
   ],
   creator: "shadcn",

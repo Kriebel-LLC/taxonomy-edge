@@ -4,7 +4,6 @@ import { authentication } from "next-firebase-auth-edge/lib/next/middleware";
 import { authConfig } from "@/lib/auth";
 
 export async function middleware(request: NextRequest) {
-  console.log(request.cookies.get(authConfig.cookieName));
   if (
     request.nextUrl.pathname === "/login" ||
     request.nextUrl.pathname === "/register"
