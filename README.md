@@ -79,6 +79,7 @@ yarn run web
    2. `Build output directory` to `/packages/web/.vercel/output/static`
 4. Complete the Cloudflare instructions set above
 5. Make sure you set all environment variables, or your build will fail!
+   - Don't forget the `NODE_VERSION` env var that the instructions above mention!
    - Note: your `FIREBASE_PRIVATE_KEY` env var should be stripped of all `\n`, `-----BEGIN PRIVATE KEY-----`, and `-----END PRIVATE KEY-----` which are stripped in application code anyway. Cloudflare environment variables do not seem to escape/unescape these properly, at least when entered from the dashboard.
 
 ## Managing the DB
