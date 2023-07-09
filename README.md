@@ -9,7 +9,7 @@ A version of [shadcn's taxonomy](https://github.com/shadcn/taxonomy) starter app
 ## Why?
 To deploy a pre-built, state-of-the-art Next.js application on Cloudflare Pages, which [requires the edge runtime](https://developers.cloudflare.com/pages/framework-guides/deploy-a-nextjs-site/#use-the-edge-runtime), though this repo can be deployed where edge runtime is supported.
 
-Edge applications are often deployed more broadly, to "edge" servers close to users, and support 0ms cold starts, unlike regular serverless applications. Because of this, performance may increase. Read more [here](https://workers.cloudflare.com/).
+Edge applications are often deployed more broadly, to "edge" servers close to users, and supports 0ms cold starts, unlike regular serverless applications. Because of this, performance may increase. Read more [here](https://workers.cloudflare.com/).
 
 ## Features
 
@@ -49,8 +49,9 @@ Compared to the [taxonomy repo](https://github.com/shadcn/taxonomy) repo, the fo
 6. Contentlayer has been replaced with `next/mdx` and manually routed pages since next-contentlayer uses incompatible APIs. 
 7. Usage of `next/image` has been replaced since it's [currently unsupported by Cloudflare Pages](https://developers.cloudflare.com/pages/framework-guides/deploy-a-nextjs-site/#statically-imported-images-on-pages).
 8. Use of `vercel/og` is disabled since it's [currently broken](https://github.com/cloudflare/next-on-pages/issues/39) in Next.js on Cloudflare Pages.
-9. Some edge-runtime incompatible components are loaded dynamically on clients, without SSR.
+9. Use of `EditorJS` is disabled since it seems to import wasm, causing next-on-pages builds to fail. See [this issue](https://github.com/cloudflare/next-on-pages/issues/344) for more details.
 10. Yarn: [shadcn/ui](https://github.com/shadcn/ui), the component library for this project, is in a separate package named `components`, while the Next.js app is in another. This repo uses yarn workspaces to link them. 
+
 ## Running Locally
 
 1. Install dependencies using pnpm:
@@ -91,7 +92,7 @@ In the `./packages/web` directory, you can:
 
 All operations are run against the database defined in your .env.local environment variables through the planetscale serverless driver. 
 
-## Known Issues
+## Known Issues/TODO's
 - Table of contents in certain MDX pages is disabled for now
 
 ## License

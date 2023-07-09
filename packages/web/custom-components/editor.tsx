@@ -3,7 +3,7 @@
 import * as React from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import EditorJS from "@editorjs/editorjs";
+// import EditorJS from "@editorjs/editorjs";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Post } from "@/db/schema";
 import { useForm } from "react-hook-form";
@@ -17,6 +17,10 @@ import { buttonVariants } from "components/ui/button";
 import { toast } from "components/ui/use-toast";
 import { Icons } from "@/custom-components/icons";
 
+// NOTE: EditorJS seems to import wasm, so it currently causes `next-on-pages` builds to fail
+//       For simplicity, it has been commented in this filed and replaced with a simple Text Area
+//       A bug on this issue is here: https://github.com/cloudflare/next-on-pages/issues/344
+
 interface EditorProps {
   post: Pick<Post, "id" | "title" | "content" | "published">;
 }
@@ -27,44 +31,44 @@ export default function Editor({ post }: EditorProps) {
   const { register, handleSubmit } = useForm<FormData>({
     resolver: zodResolver(postPatchSchema),
   });
-  const ref = React.useRef<EditorJS>();
+  // const ref = React.useRef<EditorJS>();
   const router = useRouter();
   const [isSaving, setIsSaving] = React.useState<boolean>(false);
   const [isMounted, setIsMounted] = React.useState<boolean>(false);
 
-  const initializeEditor = React.useCallback(async () => {
-    const EditorJS = (await import("@editorjs/editorjs")).default;
-    const Header = (await import("@editorjs/header")).default;
-    const Embed = (await import("@editorjs/embed")).default;
-    const Table = (await import("@editorjs/table")).default;
-    const List = (await import("@editorjs/list")).default;
-    const Code = (await import("@editorjs/code")).default;
-    const LinkTool = (await import("@editorjs/link")).default;
-    const InlineCode = (await import("@editorjs/inline-code")).default;
+  // const initializeEditor = React.useCallback(async () => {
+  //   const EditorJS = (await import("@editorjs/editorjs")).default;
+  //   const Header = (await import("@editorjs/header")).default;
+  //   const Embed = (await import("@editorjs/embed")).default;
+  //   const Table = (await import("@editorjs/table")).default;
+  //   const List = (await import("@editorjs/list")).default;
+  //   const Code = (await import("@editorjs/code")).default;
+  //   const LinkTool = (await import("@editorjs/link")).default;
+  //   const InlineCode = (await import("@editorjs/inline-code")).default;
 
-    const body = postPatchSchema.parse(post);
+  //   const body = postPatchSchema.parse(post);
 
-    if (!ref.current) {
-      const editor = new EditorJS({
-        holder: "editor",
-        onReady() {
-          ref.current = editor;
-        },
-        placeholder: "Type here to write your post...",
-        inlineToolbar: true,
-        data: body.content,
-        tools: {
-          header: Header,
-          linkTool: LinkTool,
-          list: List,
-          code: Code,
-          inlineCode: InlineCode,
-          table: Table,
-          embed: Embed,
-        },
-      });
-    }
-  }, [post]);
+  //   if (!ref.current) {
+  //     const editor = new EditorJS({
+  //       holder: "editor",
+  //       onReady() {
+  //         ref.current = editor;
+  //       },
+  //       placeholder: "Type here to write your post...",
+  //       inlineToolbar: true,
+  //       data: body.content,
+  //       tools: {
+  //         header: Header,
+  //         linkTool: LinkTool,
+  //         list: List,
+  //         code: Code,
+  //         inlineCode: InlineCode,
+  //         table: Table,
+  //         embed: Embed,
+  //       },
+  //     });
+  //   }
+  // }, [post]);
 
   React.useEffect(() => {
     if (typeof window !== "undefined") {
@@ -72,21 +76,21 @@ export default function Editor({ post }: EditorProps) {
     }
   }, []);
 
-  React.useEffect(() => {
-    if (isMounted) {
-      initializeEditor();
+  // React.useEffect(() => {
+  //   if (isMounted) {
+  //     initializeEditor();
 
-      return () => {
-        ref.current?.destroy();
-        ref.current = undefined;
-      };
-    }
-  }, [isMounted, initializeEditor]);
+  //     return () => {
+  //       ref.current?.destroy();
+  //       ref.current = undefined;
+  //     };
+  //   }
+  // }, [isMounted, initializeEditor]);
 
   async function onSubmit(data: FormData) {
     setIsSaving(true);
 
-    const blocks = await ref.current?.save();
+    // const blocks = await ref.current?.save();
 
     const response = await fetch(`/api/posts/${post.id}`, {
       method: "PATCH",
@@ -95,7 +99,7 @@ export default function Editor({ post }: EditorProps) {
       },
       body: JSON.stringify({
         title: data.title,
-        content: blocks,
+        content: data.content,
       }),
     });
 
@@ -154,14 +158,13 @@ export default function Editor({ post }: EditorProps) {
             className="w-full resize-none appearance-none overflow-hidden bg-transparent text-5xl font-bold focus:outline-none"
             {...register("title")}
           />
-          <div id="editor" className="min-h-[500px]" />
-          <p className="text-sm text-gray-500">
-            Use{" "}
-            <kbd className="rounded-md border bg-muted px-1 text-xs uppercase">
-              Tab
-            </kbd>{" "}
-            to open the command menu.
-          </p>
+          <TextareaAutosize
+            id="content"
+            defaultValue={post.content as any}
+            placeholder="Post content"
+            className="flex min-h-[500px] w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+            {...register("content")}
+          />
         </div>
       </div>
     </form>

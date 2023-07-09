@@ -1,5 +1,4 @@
 import { notFound, redirect } from "next/navigation";
-import dynamic from "next/dynamic";
 
 import { db } from "@/db";
 import { posts } from "@/db/schema";
@@ -7,7 +6,7 @@ import { getCurrentServerUser } from "@/lib/session";
 import { eq, and } from "drizzle-orm";
 import type { Post, User } from "@/db/schema";
 import { cookies } from "next/headers";
-import { Skeleton } from "components/ui/skeleton";
+import Editor from "@/custom-components/editor";
 
 export const runtime = "edge";
 
@@ -23,11 +22,6 @@ async function getPostForUser(
       .limit(1)
   )[0];
 }
-
-const Editor = dynamic(() => import("@/custom-components/editor"), {
-  loading: () => <Skeleton className="h-4 w-[200px]" />,
-  ssr: false,
-});
 
 interface EditorPageProps {
   params: { postId: string };
