@@ -1,0 +1,12 @@
+**/node_modules
+**.next
+**.env
+**.DS_Store
+**.vercel
+**.git
+.vercel
+
+# Sentry
+.sentryclirc
+
+.env.local

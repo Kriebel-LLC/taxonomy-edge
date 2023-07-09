@@ -1,0 +1,11 @@
+{
+  "references": [
+    {
+      "path": "./packages/components"
+    },
+    {
+      "path": "./packages/web"
+    }
+  ],
+  "exclude": ["node_modules"]
+}
