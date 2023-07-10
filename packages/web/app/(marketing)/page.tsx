@@ -3,6 +3,7 @@ import Link from "next/link";
 import { siteConfig } from "@/config/site";
 import { cn } from "components/lib/utils";
 import { buttonVariants } from "components/ui/button";
+import { env } from "@/env.mjs";
 
 export const runtime = "edge";
 
@@ -13,6 +14,7 @@ async function getGitHubStars(): Promise<string | null> {
       {
         headers: {
           Accept: "application/vnd.github+json",
+          Authorization: `Bearer ${env.GITHUB_ACCESS_TOKEN}`,
         },
         next: {
           revalidate: 60,
