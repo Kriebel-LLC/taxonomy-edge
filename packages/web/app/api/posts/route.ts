@@ -24,7 +24,7 @@ export async function GET(req: Request) {
     }
 
     const { uid } = session;
-    const postRecords = await db
+    const postRecords = await db()
       .select({
         id: posts.id,
         title: posts.title,
@@ -54,7 +54,7 @@ export async function POST(req: Request) {
     // If user is on a free plan.
     // Check if user has reached limit of 3 posts.
     if (!subscriptionPlan?.isPro) {
-      const countQuery = await db
+      const countQuery = await db()
         .select({
           count: sql<number>`count(*)`.mapWith(Number),
         })
@@ -73,7 +73,7 @@ export async function POST(req: Request) {
 
     const postId = nanoid();
 
-    await db.insert(posts).values({
+    await db().insert(posts).values({
       id: postId,
       title: body.title,
       content: body.content,

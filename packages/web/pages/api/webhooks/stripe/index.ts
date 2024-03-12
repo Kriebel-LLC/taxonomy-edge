@@ -51,7 +51,7 @@ export default async function handler(req: NextRequest) {
     // Update the user stripe into in our database.
     // Since this is the initial subscription, we need to update
     // the subscription id and customer id.
-    await db
+    await db()
       .update(users)
       .set({
         stripeSubscriptionId: subscription.id,
@@ -71,7 +71,7 @@ export default async function handler(req: NextRequest) {
     );
 
     // Update the price id and set the new period end.
-    await db
+    await db()
       .update(users)
       .set({
         stripePriceId: subscription.items.data[0].price.id,

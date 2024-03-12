@@ -1,17 +1,7 @@
-import { drizzle } from "drizzle-orm/planetscale-serverless";
-import { connect } from "@planetscale/database";
-import { env } from "@/env.mjs";
+import { drizzle } from "drizzle-orm/d1";
+import * as schema from "@/db/schema";
+import { getRequestContext } from "@cloudflare/next-on-pages";
 
-const connection = connect({
-  host: env.DATABASE_HOST,
-  username: env.DATABASE_USERNAME,
-  password: env.DATABASE_PASSWORD,
-  // removes the `cache` header, which breaks cloudflare workers; remove this as soon as possible after fixed
-  // for details: https://github.com/cloudflare/workerd/issues/698#issue-1723641854
-  fetch: (url, init) => {
-    delete (init as any)["cache"]; // Remove cache header
-    return fetch(url, init);
-  },
-});
-
-export const db = drizzle(connection, { logger: true });
+// Can ONLY be used in backend routes where getRequestContext is available
+export const db = () =>
+  drizzle(getRequestContext().env.DB, { logger: true, schema });

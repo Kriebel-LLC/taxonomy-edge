@@ -1,0 +1,10 @@
+name = "taxonomy-edge"
+
+compatibility_flags = ["nodejs_compat"]
+
+[[d1_databases]]
+binding = "DB"
+database_name = "taxonomy-edge"
+database_id = "f3605ad1-8224-4ce1-9594-71430e5f330d"
+preview_database_id = "f3605ad1-8224-4ce1-9594-71430e5f330d" # Required for Pages local development
+migrations_dir = "db/migrations/"

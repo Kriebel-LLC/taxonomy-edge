@@ -16,9 +16,8 @@
     "web:lint": "yarn workspace web lint"
   },
   "devDependencies": {
-    "@cloudflare/next-on-pages": "1.1.1",
     "typescript": "^5.0.4",
-    "vercel": "^30.2.3",
-    "wrangler": "^3.1.1"
+    "vercel": "^32.4.1",
+    "wrangler": "^3.31.0"
   }
 }

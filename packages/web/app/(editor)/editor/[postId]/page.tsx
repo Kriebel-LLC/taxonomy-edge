@@ -15,7 +15,7 @@ async function getPostForUser(
   userId: User["id"]
 ): Promise<Post | undefined> {
   return (
-    await db
+    await db()
       .select()
       .from(posts)
       .where(and(eq(posts.id, postId), eq(posts.authorId, userId)))

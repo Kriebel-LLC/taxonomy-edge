@@ -24,7 +24,7 @@ export default async function DashboardPage() {
     redirect("/login");
   }
 
-  const dbPosts = await db
+  const dbPosts = await db()
     .select({
       id: posts.id,
       title: posts.title,

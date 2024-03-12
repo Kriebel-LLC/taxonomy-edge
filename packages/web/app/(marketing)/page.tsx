@@ -119,7 +119,7 @@ export default async function IndexPage() {
               <div className="space-y-2">
                 <h3 className="font-bold">Database</h3>
                 <p className="text-sm text-muted-foreground">
-                  ORM using Drizzle and deployed on PlanetScale.
+                  ORM using Drizzle and deployed on Cloudflare D1.
                 </p>
               </div>
             </div>

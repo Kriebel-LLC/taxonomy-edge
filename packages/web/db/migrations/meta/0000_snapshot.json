@@ -1,7 +1,7 @@
 {
   "version": "5",
-  "dialect": "mysql",
-  "id": "cc041c3e-3ccc-439c-8451-db9c09cbfba5",
+  "dialect": "sqlite",
+  "id": "49213ee7-ea3e-48fa-8a4b-2dfe8121f84f",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "posts": {
@@ -9,52 +9,52 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "varchar(191)",
+          "type": "text(191)",
           "primaryKey": true,
           "notNull": true,
           "autoincrement": false
         },
         "title": {
           "name": "title",
-          "type": "varchar(191)",
+          "type": "text(191)",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
         },
         "content": {
           "name": "content",
-          "type": "json",
+          "type": "text",
           "primaryKey": false,
           "notNull": false,
           "autoincrement": false
         },
         "published": {
           "name": "published",
-          "type": "tinyint",
+          "type": "integer",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false,
-          "default": 0
+          "default": false
         },
         "created_at": {
           "name": "created_at",
-          "type": "datetime(3)",
+          "type": "integer",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false,
-          "default": "(CURRENT_TIMESTAMP(3))"
+          "default": "CURRENT_TIMESTAMP"
         },
         "updated_at": {
           "name": "updated_at",
-          "type": "datetime(3)",
+          "type": "integer",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false,
-          "default": "(CURRENT_TIMESTAMP(3))"
+          "default": "CURRENT_TIMESTAMP"
         },
         "authorId": {
           "name": "authorId",
-          "type": "varchar(191)",
+          "type": "text(191)",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
@@ -62,58 +62,58 @@
       },
       "indexes": {},
       "foreignKeys": {},
-      "compositePrimaryKeys": {}
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
     },
     "users": {
       "name": "users",
       "columns": {
         "id": {
           "name": "id",
-          "type": "varchar(191)",
+          "type": "text(191)",
           "primaryKey": true,
           "notNull": true,
           "autoincrement": false
         },
         "created_at": {
           "name": "created_at",
-          "type": "datetime(3)",
+          "type": "integer",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false,
-          "default": "(CURRENT_TIMESTAMP(3))"
+          "default": "CURRENT_TIMESTAMP"
         },
         "updated_at": {
           "name": "updated_at",
-          "type": "datetime(3)",
+          "type": "integer",
           "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false,
-          "default": "(CURRENT_TIMESTAMP(3))"
+          "notNull": false,
+          "autoincrement": false
         },
         "stripe_customer_id": {
           "name": "stripe_customer_id",
-          "type": "varchar(191)",
+          "type": "text(191)",
           "primaryKey": false,
           "notNull": false,
           "autoincrement": false
         },
         "stripe_subscription_id": {
           "name": "stripe_subscription_id",
-          "type": "varchar(191)",
+          "type": "text(191)",
           "primaryKey": false,
           "notNull": false,
           "autoincrement": false
         },
         "stripe_price_id": {
           "name": "stripe_price_id",
-          "type": "varchar(191)",
+          "type": "text(191)",
           "primaryKey": false,
           "notNull": false,
           "autoincrement": false
         },
         "stripe_current_period_end": {
           "name": "stripe_current_period_end",
-          "type": "datetime(3)",
+          "type": "integer",
           "primaryKey": false,
           "notNull": false,
           "autoincrement": false
@@ -122,20 +122,25 @@
       "indexes": {
         "users_stripe_customer_id_key": {
           "name": "users_stripe_customer_id_key",
-          "columns": ["stripe_customer_id"],
+          "columns": [
+            "stripe_customer_id"
+          ],
           "isUnique": true
         },
         "users_stripe_subscription_id_key": {
           "name": "users_stripe_subscription_id_key",
-          "columns": ["stripe_subscription_id"],
+          "columns": [
+            "stripe_subscription_id"
+          ],
           "isUnique": true
         }
       },
       "foreignKeys": {},
-      "compositePrimaryKeys": {}
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
     }
   },
-  "schemas": {},
+  "enums": {},
   "_meta": {
     "schemas": {},
     "tables": {},
