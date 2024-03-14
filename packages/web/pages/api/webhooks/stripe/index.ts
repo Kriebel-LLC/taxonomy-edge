@@ -4,7 +4,6 @@ import { stripe } from "@/lib/stripe";
 import Stripe from "stripe";
 import { users } from "@/db/schema";
 import { eq } from "drizzle-orm";
-import { dateToMySQLDateString } from "@/lib/utils";
 import type { NextRequest } from "next/server";
 
 export const config = {
@@ -57,8 +56,8 @@ export default async function handler(req: NextRequest) {
         stripeSubscriptionId: subscription.id,
         stripeCustomerId: subscription.customer as string,
         stripePriceId: subscription.items.data[0].price.id,
-        stripeCurrentPeriodEnd: dateToMySQLDateString(
-          new Date(subscription.current_period_end * 1000)
+        stripeCurrentPeriodEnd: new Date(
+          subscription.current_period_end * 1000
         ),
       })
       .where(eq(users.id, session?.metadata?.userId as string));
@@ -75,8 +74,8 @@ export default async function handler(req: NextRequest) {
       .update(users)
       .set({
         stripePriceId: subscription.items.data[0].price.id,
-        stripeCurrentPeriodEnd: dateToMySQLDateString(
-          new Date(subscription.current_period_end * 1000)
+        stripeCurrentPeriodEnd: new Date(
+          subscription.current_period_end * 1000
         ),
       })
       .where(eq(users.stripeSubscriptionId, subscription.id));

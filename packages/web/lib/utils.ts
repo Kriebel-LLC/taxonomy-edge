@@ -14,10 +14,6 @@ export function absoluteUrl(path: string) {
   return `${env.NEXT_PUBLIC_APP_URL}${path}`;
 }
 
-export function dateToMySQLDateString(date: Date): string {
-  return date.toISOString().slice(0, 19).replace("T", " ");
-}
-
 export function mapMetadata(metadata: any): Metadata {
   return {
     title: metadata.title,

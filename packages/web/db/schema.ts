@@ -1,4 +1,4 @@
-import { InferModel } from "drizzle-orm";
+import { InferSelectModel } from "drizzle-orm";
 import { sql } from "drizzle-orm";
 import {
   integer,
@@ -52,5 +52,5 @@ export const users = sqliteTable(
   }
 );
 
-export type User = InferModel<typeof users>;
-export type Post = InferModel<typeof posts>;
+export type User = InferSelectModel<typeof users>;
+export type Post = InferSelectModel<typeof posts>;
