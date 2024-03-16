@@ -2,7 +2,7 @@ import Link from "next/link";
 import { compareDesc } from "date-fns";
 import { GuideMetadatas } from "@/content/guides";
 
-import { formatDate } from "@/lib/utils";
+import { formatDateInput } from "@/lib/utils";
 import { DocsPageHeader } from "@/custom-components/page-header";
 
 export const runtime = "edge";
@@ -47,7 +47,7 @@ export default function GuidesPage() {
                 </div>
                 {guide.date && (
                   <p className="text-sm text-muted-foreground">
-                    {formatDate(guide.date)}
+                    {formatDateInput(guide.date)}
                   </p>
                 )}
               </div>

@@ -2,7 +2,7 @@ import Link from "next/link";
 import { compareDesc } from "date-fns";
 import { BlogPostMetas } from "@/content/blog";
 
-import { formatDate } from "@/lib/utils";
+import { formatDateInput } from "@/lib/utils";
 
 export const runtime = "edge";
 
@@ -50,7 +50,7 @@ export default async function BlogPage() {
               )}
               {post.date && (
                 <p className="text-sm text-muted-foreground">
-                  {formatDate(post.date)}
+                  {formatDateInput(post.date)}
                 </p>
               )}
               <Link href={post.slug} className="absolute inset-0">

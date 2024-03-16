@@ -1,8 +1,12 @@
 import { env } from "@/env.mjs";
 import { Metadata } from "next";
 
-export function formatDate(input: string | number): string {
+export function formatDateInput(input: string | number): string {
   const date = new Date(input);
+  return formatDate(date);
+}
+
+export function formatDate(date: Date): string {
   return date.toLocaleDateString("en-US", {
     month: "long",
     day: "numeric",
