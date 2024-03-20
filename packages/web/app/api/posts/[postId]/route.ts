@@ -28,7 +28,9 @@ export async function DELETE(
     }
 
     // Delete the post.
-    await db.delete(posts).where(eq(posts.id, params.postId as string));
+    await db()
+      .delete(posts)
+      .where(eq(posts.id, params.postId as string));
 
     return new Response(null, { status: 204 });
   } catch (error) {
@@ -59,7 +61,7 @@ export async function PATCH(
 
     // Update the post.
     // TODO: Implement sanitization for content.
-    await db
+    await db()
       .update(posts)
       .set({ title: body.title, content: body.content })
       .where(eq(posts.id, params.postId));
@@ -80,7 +82,7 @@ async function verifyCurrentUserHasAccessToPost(req: Request, postId: string) {
     return false;
   }
 
-  const countQuery = await db
+  const countQuery = await db()
     .select({
       count: sql<number>`count(*)`.mapWith(Number),
     })

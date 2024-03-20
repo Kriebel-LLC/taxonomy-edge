@@ -28,7 +28,8 @@ Changes to the original taxonomy repo are ~~struckthrough~~
 - - `next-firebase-auth-edge` allows easy use of cookies, to seamlessly power auth in server components, rather than send JWTs manually every request
 - ORM using ~~Prisma~~ **Drizzle**
 - - Prisma is [not currently compatible](https://github.com/prisma/prisma/issues/19500) with edge runtime
-- Database on **PlanetScale** using the [Serverless Driver](https://github.com/planetscale/database-js)
+- Database on ~~**PlanetScale** using the [Serverless Driver](https://github.com/planetscale/database-js)~~
+- - On April 8th, 2024, Planetscale's free tier is going away. DB has moved to Cloudflare D1!
 - UI Components built using **Radix UI**
 - Documentation and blog using **MDX** ~~and Contentlayer~~ and `next/mdx`
 - - Contentlayer seems to generate code that is evaluated during runtime. This evaluation uses [edge runtime-incompatible APIs](https://github.com/contentlayerdev/contentlayer/blob/main/packages/next-contentlayer/src/hooks/useMDXComponent.ts#L24).
@@ -44,13 +45,13 @@ Compared to the [taxonomy repo](https://github.com/shadcn/taxonomy) repo, the fo
 1. All routes, including server-rendered pages, include `export const runtime = "edge";` to opt into edge runtime.
 2. Auth has moved to Firebase Auth, using `next-firebase-auth-edge` since NextAuth is incompatible with edge runtime.
 3. Prisma has been replaced with [Drizzle](https://github.com/drizzle-team/drizzle-orm), which is edge runtime-compatible.
-4. PlanetScale uses their serverless driver, to fetch database results over HTTP.
-5. Stripe has been modified to use Web Crypto, `constructEventAsync`, and `createFetchHttpClient` to add edge compatibility.
-6. Contentlayer has been replaced with `next/mdx` and manually routed pages since next-contentlayer uses incompatible APIs. 
-7. Usage of `next/image` has been replaced since it's [currently unsupported by Cloudflare Pages](https://developers.cloudflare.com/pages/framework-guides/deploy-a-nextjs-site/#statically-imported-images-on-pages).
-8. Use of `vercel/og` is disabled since it's [currently broken](https://github.com/cloudflare/next-on-pages/issues/39) in Next.js on Cloudflare Pages.
-9. Use of `EditorJS` is disabled since it seems to import wasm, causing next-on-pages builds to fail. See [this issue](https://github.com/cloudflare/next-on-pages/issues/344) for more details.
-10. Yarn: [shadcn/ui](https://github.com/shadcn/ui), the component library for this project, is in a separate package named `components`, while the Next.js app is in another. This repo uses yarn workspaces to link them. 
+4. Stripe has been modified to use Web Crypto, `constructEventAsync`, and `createFetchHttpClient` to add edge compatibility.
+5. Contentlayer has been replaced with `next/mdx` and manually routed pages since next-contentlayer uses incompatible APIs. 
+6. Usage of `next/image` has been replaced since it's [currently unsupported by Cloudflare Pages](https://developers.cloudflare.com/pages/framework-guides/deploy-a-nextjs-site/#statically-imported-images-on-pages).
+7. Use of `vercel/og` is disabled since it's [currently broken](https://github.com/cloudflare/next-on-pages/issues/39) in Next.js on Cloudflare Pages.
+8. Use of `EditorJS` is disabled since it seems to import wasm, causing next-on-pages builds to fail. See [this issue](https://github.com/cloudflare/next-on-pages/issues/344) for more details.
+9.  Yarn: [shadcn/ui](https://github.com/shadcn/ui), the component library for this project, is in a separate package named `components`, while the Next.js app is in another. This repo uses yarn workspaces to link them. 
+10. Planetscale database has been replaced with Cloudflare D1. You can launch taxonomy-edge with a database of your choice by replacing usages of D1 with your database.
 
 ## Running Locally
 
@@ -81,16 +82,17 @@ yarn run web
 4. Complete the Cloudflare instructions set above
 5. Make sure you set all environment variables, or your build will fail!
    - Don't forget the `NODE_VERSION` env var that the instructions above mention!
-   - Note: your `FIREBASE_PRIVATE_KEY` env var should be stripped of all `\n`, `-----BEGIN PRIVATE KEY-----`, and `-----END PRIVATE KEY-----` which are stripped in application code anyway. Cloudflare environment variables do not seem to escape/unescape these properly, at least when entered from the dashboard.
+   - Note: your `FIREBASE_PRIVATE_KEY` env var must be stripped of all `\n`. Cloudflare environment variables do not seem to escape/unescape these properly, at least when entered from the dashboard.
 
 ## Managing the DB
 In the `./packages/web` directory, you can:
-- run `yarn run db:pull` to pull your database's current schema into a local drizzle schema file
 - run `yarn run db:migrate-gen` to create a migration based on the state of your `./db/schema.ts` file
-- run `yarn run db:migrate-run` to apply any migrations against your database
-- - Note: you may need to add `"type": "module",` to `/packages/web/package.json` in some local configuarions to make this work
+- run `yarn run db:migrate-list` to list any unapplied migration files. Options: `--local` for local DB, `--preview` for preview environment DB, and no flag for main/production DB.
+- run `yarn run db:migrate-prod` to apply any migrations against your remote, production database
+- - run `yarn run db:migrate-local` to apply migrations against your local db
+- - run `yarn run db:migrate-preview` to apply migrations against your remote, preview db (as defined by preview_database_id in `wrangler.toml`)
 
-All operations are run against the database defined in your .env.local environment variables through the planetscale serverless driver. 
+All operations are run against the database named `taxonomy-edge` locally to start.
 
 ## Known Issues/TODO's
 - Table of contents in certain MDX pages is disabled for now

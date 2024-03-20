@@ -4,7 +4,6 @@ import { stripe } from "@/lib/stripe";
 import Stripe from "stripe";
 import { users } from "@/db/schema";
 import { eq } from "drizzle-orm";
-import { dateToMySQLDateString } from "@/lib/utils";
 import type { NextRequest } from "next/server";
 
 export const config = {
@@ -51,14 +50,14 @@ export default async function handler(req: NextRequest) {
     // Update the user stripe into in our database.
     // Since this is the initial subscription, we need to update
     // the subscription id and customer id.
-    await db
+    await db()
       .update(users)
       .set({
         stripeSubscriptionId: subscription.id,
         stripeCustomerId: subscription.customer as string,
         stripePriceId: subscription.items.data[0].price.id,
-        stripeCurrentPeriodEnd: dateToMySQLDateString(
-          new Date(subscription.current_period_end * 1000)
+        stripeCurrentPeriodEnd: new Date(
+          subscription.current_period_end * 1000
         ),
       })
       .where(eq(users.id, session?.metadata?.userId as string));
@@ -71,12 +70,12 @@ export default async function handler(req: NextRequest) {
     );
 
     // Update the price id and set the new period end.
-    await db
+    await db()
       .update(users)
       .set({
         stripePriceId: subscription.items.data[0].price.id,
-        stripeCurrentPeriodEnd: dateToMySQLDateString(
-          new Date(subscription.current_period_end * 1000)
+        stripeCurrentPeriodEnd: new Date(
+          subscription.current_period_end * 1000
         ),
       })
       .where(eq(users.stripeSubscriptionId, subscription.id));

@@ -7,6 +7,7 @@ import { cn } from "components/lib/utils";
 import { ButtonProps, buttonVariants } from "components/ui/button";
 import { toast } from "components/ui/use-toast";
 import { Icons } from "@/custom-components/icons";
+import { Post } from "@/db/schema";
 
 interface PostCreateButtonProps extends ButtonProps {}
 
@@ -49,7 +50,7 @@ export function PostCreateButton({
       });
     }
 
-    const post = await response.json();
+    const post: Post = await response.json();
 
     // This forces a cache invalidation.
     router.refresh();
@@ -71,9 +72,9 @@ export function PostCreateButton({
       {...props}
     >
       {isLoading ? (
-        <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
+        <Icons.spinner className="mr-2 size-4 animate-spin" />
       ) : (
-        <Icons.add className="mr-2 h-4 w-4" />
+        <Icons.add className="mr-2 size-4" />
       )}
       New post
     </button>

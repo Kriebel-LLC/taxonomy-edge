@@ -3,7 +3,7 @@
 import * as React from "react";
 
 import { UserSubscriptionPlan } from "types";
-import { formatDate } from "@/lib/utils";
+import { formatDateInput } from "@/lib/utils";
 import { cn } from "components/lib/utils";
 import { buttonVariants } from "components/ui/button";
 import {
@@ -49,7 +49,7 @@ export function BillingForm({
     // Redirect to the Stripe session.
     // This could be a checkout page for initial upgrade.
     // Or portal to manage existing subscription.
-    const session = await response.json();
+    const session: { url: string } = await response.json();
     if (session) {
       window.location.href = session.url;
     }
@@ -73,7 +73,7 @@ export function BillingForm({
             disabled={isLoading}
           >
             {isLoading && (
-              <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
+              <Icons.spinner className="mr-2 size-4 animate-spin" />
             )}
             {subscriptionPlan.isPro ? "Manage Subscription" : "Upgrade to PRO"}
           </button>
@@ -82,7 +82,7 @@ export function BillingForm({
               {subscriptionPlan.isCanceled
                 ? "Your plan will be canceled on "
                 : "Your plan renews on "}
-              {formatDate(subscriptionPlan.stripeCurrentPeriodEnd)}.
+              {formatDateInput(subscriptionPlan.stripeCurrentPeriodEnd)}.
             </p>
           ) : null}
         </CardFooter>

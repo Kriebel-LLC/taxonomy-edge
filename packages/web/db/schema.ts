@@ -1,44 +1,43 @@
-import {
-  mysqlTable,
-  varchar,
-  datetime,
-  json,
-  tinyint,
-  uniqueIndex,
-} from "drizzle-orm/mysql-core";
+import { InferSelectModel } from "drizzle-orm";
 import { sql } from "drizzle-orm";
-import { InferModel } from "drizzle-orm";
+import {
+  integer,
+  sqliteTable,
+  text,
+  uniqueIndex,
+} from "drizzle-orm/sqlite-core";
 
-export const posts = mysqlTable("posts", {
-  id: varchar("id", { length: 191 }).primaryKey().notNull(),
-  title: varchar("title", { length: 191 }).notNull(),
-  content: json("content"),
-  published: tinyint("published").default(0).notNull(),
-  createdAt: datetime("created_at", { mode: "string", fsp: 3 })
-    .default(sql`(CURRENT_TIMESTAMP(3))`)
+export const posts = sqliteTable("posts", {
+  id: text("id", { length: 191 }).primaryKey().notNull(),
+  title: text("title", { length: 191 }).notNull(),
+  content: text("content", { mode: "json" }),
+  published: integer("published", { mode: "boolean" }).default(false).notNull(),
+  createdAt: integer("created_at", { mode: "timestamp_ms" })
+    .default(sql`CURRENT_TIMESTAMP`)
     .notNull(),
-  updatedAt: datetime("updated_at", { mode: "string", fsp: 3 })
-    .default(sql`(CURRENT_TIMESTAMP(3))`)
+  updatedAt: integer("updated_at", { mode: "timestamp_ms" })
+    .default(sql`CURRENT_TIMESTAMP`)
     .notNull(),
-  authorId: varchar("authorId", { length: 191 }).notNull(),
+  authorId: text("authorId", { length: 191 }).notNull(),
 });
 
-export const users = mysqlTable(
+export const users = sqliteTable(
   "users",
   {
-    id: varchar("id", { length: 191 }).primaryKey().notNull(),
-    createdAt: datetime("created_at", { mode: "string", fsp: 3 })
-      .default(sql`(CURRENT_TIMESTAMP(3))`)
+    id: text("id", { length: 191 }).primaryKey().notNull(),
+    createdAt: integer("created_at", {
+      mode: "timestamp",
+    })
+      .default(sql`CURRENT_TIMESTAMP`)
       .notNull(),
-    updatedAt: datetime("updated_at", { mode: "string", fsp: 3 })
-      .default(sql`(CURRENT_TIMESTAMP(3))`)
-      .notNull(),
-    stripeCustomerId: varchar("stripe_customer_id", { length: 191 }),
-    stripeSubscriptionId: varchar("stripe_subscription_id", { length: 191 }),
-    stripePriceId: varchar("stripe_price_id", { length: 191 }),
-    stripeCurrentPeriodEnd: datetime("stripe_current_period_end", {
-      mode: "string",
-      fsp: 3,
+    updatedAt: integer("updated_at", {
+      mode: "timestamp_ms",
+    }),
+    stripeCustomerId: text("stripe_customer_id", { length: 191 }),
+    stripeSubscriptionId: text("stripe_subscription_id", { length: 191 }),
+    stripePriceId: text("stripe_price_id", { length: 191 }),
+    stripeCurrentPeriodEnd: integer("stripe_current_period_end", {
+      mode: "timestamp_ms",
     }),
   },
   (table) => {
@@ -53,5 +52,5 @@ export const users = mysqlTable(
   }
 );
 
-export type User = InferModel<typeof users>;
-export type Post = InferModel<typeof posts>;
+export type User = InferSelectModel<typeof users>;
+export type Post = InferSelectModel<typeof posts>;

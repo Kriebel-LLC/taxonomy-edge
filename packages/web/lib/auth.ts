@@ -35,7 +35,7 @@ export function getAuthorizationTokenFromHeader(headers: Headers) {
 }
 
 async function getUserRecord(uid: string): Promise<User | undefined> {
-  return (await db.select().from(users).where(eq(users.id, uid)).limit(1))[0];
+  return (await db().select().from(users).where(eq(users.id, uid)).limit(1))[0];
 }
 
 export async function getOrCreateUserRecord(uid: string): Promise<User> {
@@ -45,7 +45,7 @@ export async function getOrCreateUserRecord(uid: string): Promise<User> {
   }
 
   // lazily insert since created records on sign-up is not guaranteed due to creation happening in Firebase
-  await db.insert(users).values({ id: uid });
+  await db().insert(users).values({ id: uid });
 
   return (await getUserRecord(uid))!;
 }
