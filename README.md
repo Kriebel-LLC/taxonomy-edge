@@ -82,15 +82,15 @@ yarn run web
 4. Complete the Cloudflare instructions set above
 5. Make sure you set all environment variables, or your build will fail!
    - Don't forget the `NODE_VERSION` env var that the instructions above mention!
-   - Note: your `FIREBASE_PRIVATE_KEY` env var should be stripped of all `\n`, `-----BEGIN PRIVATE KEY-----`, and `-----END PRIVATE KEY-----` which are stripped in application code anyway. Cloudflare environment variables do not seem to escape/unescape these properly, at least when entered from the dashboard.
+   - Note: your `FIREBASE_PRIVATE_KEY` env var must be stripped of all `\n`. Cloudflare environment variables do not seem to escape/unescape these properly, at least when entered from the dashboard.
 
 ## Managing the DB
 In the `./packages/web` directory, you can:
 - run `yarn run db:migrate-gen` to create a migration based on the state of your `./db/schema.ts` file
 - run `yarn run db:migrate-list` to list any unapplied migration files. Options: `--local` for local DB, `--preview` for preview environment DB, and no flag for main/production DB.
-- run `yarn run db:migrate-run` to apply any migrations against your database
+- run `yarn run db:migrate-prod` to apply any migrations against your remote, production database
 - - run `yarn run db:migrate-local` to apply migrations against your local db
-- - run `yarn run db:migrate-preview` to apply migrations against your preview db (as defined by preview_database_id in `wrangler.toml`)
+- - run `yarn run db:migrate-preview` to apply migrations against your remote, preview db (as defined by preview_database_id in `wrangler.toml`)
 
 All operations are run against the database named `taxonomy-edge` locally to start.
 

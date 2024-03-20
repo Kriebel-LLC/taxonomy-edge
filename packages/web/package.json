@@ -16,8 +16,8 @@
     "db:migrate-list": "wrangler d1 migrations list taxonomy-edge",
     "db:migrate-run": "wrangler d1 migrations apply taxonomy-edge",
     "db:migrate-local": "yarn run db:migrate-run --local",
-    "db:migrate-preview": "yarn run db:migrate-run --preview",
-    "db:migrate-prod": "yarn run db:migrate-run",
+    "db:migrate-preview": "yarn run db:migrate-run --preview --remote",
+    "db:migrate-prod": "yarn run db:migrate-run --remote",
     "db:migrate-drop": "dotenv -e .env.local -- drizzle-kit drop --out=./src/db/migrations/"
   },
   "dependencies": {
