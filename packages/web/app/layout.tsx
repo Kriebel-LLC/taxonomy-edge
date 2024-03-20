@@ -2,6 +2,7 @@ import { Inter as FontSans } from "next/font/google";
 import localFont from "next/font/local";
 
 import "@/styles/globals.css";
+import { env } from "@/env.mjs";
 import { siteConfig } from "@/config/site";
 import { cn } from "components/lib/utils";
 import { Toaster } from "components/ui/toaster";
@@ -75,6 +76,7 @@ export const metadata = {
     apple: "/apple-touch-icon.png",
   },
   manifest: `${siteConfig.url}/site.webmanifest`,
+  metadataBase: new URL(env.NEXT_PUBLIC_APP_URL),
 };
 
 export default function RootLayout({ children }: RootLayoutProps) {
