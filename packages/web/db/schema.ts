@@ -12,10 +12,10 @@ export const posts = sqliteTable("posts", {
   title: text("title", { length: 191 }).notNull(),
   content: text("content", { mode: "json" }),
   published: integer("published", { mode: "boolean" }).default(false).notNull(),
-  createdAt: integer("created_at", { mode: "timestamp" })
+  createdAt: integer("created_at", { mode: "timestamp_ms" })
     .default(sql`CURRENT_TIMESTAMP`)
     .notNull(),
-  updatedAt: integer("updated_at", { mode: "timestamp" })
+  updatedAt: integer("updated_at", { mode: "timestamp_ms" })
     .default(sql`CURRENT_TIMESTAMP`)
     .notNull(),
   authorId: text("authorId", { length: 191 }).notNull(),
@@ -31,13 +31,13 @@ export const users = sqliteTable(
       .default(sql`CURRENT_TIMESTAMP`)
       .notNull(),
     updatedAt: integer("updated_at", {
-      mode: "timestamp",
+      mode: "timestamp_ms",
     }),
     stripeCustomerId: text("stripe_customer_id", { length: 191 }),
     stripeSubscriptionId: text("stripe_subscription_id", { length: 191 }),
     stripePriceId: text("stripe_price_id", { length: 191 }),
     stripeCurrentPeriodEnd: integer("stripe_current_period_end", {
-      mode: "timestamp",
+      mode: "timestamp_ms",
     }),
   },
   (table) => {
