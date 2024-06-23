@@ -13,9 +13,8 @@ export default async function handler(req: NextRequest) {
     return new Response(null, { status: 401 });
   }
 
-  let response;
   try {
-    response = await setAuthCookies(req.headers, {
+    return setAuthCookies(req.headers, {
       cookieName: authConfig.cookieName,
       cookieSerializeOptions: authConfig.cookieSerializeOptions,
       cookieSignatureKeys: authConfig.cookieSignatureKeys,
@@ -26,6 +25,4 @@ export default async function handler(req: NextRequest) {
     console.error(error);
     return new Response(null, { status: 401 });
   }
-
-  return response;
 }

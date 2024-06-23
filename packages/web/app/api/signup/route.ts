@@ -14,12 +14,10 @@ export async function GET(req: Request) {
   if (!token) {
     return new Response(null, { status: 401 });
   }
-  const firebaseAuth = getFirebaseAuth(
-    authConfig.serviceAccount,
-    authConfig.apiKey
-  );
+  const firebaseAuth = getFirebaseAuth(authConfig);
 
   try {
+    // verifyIdToken is called within setAuthCookies, but we duplicate it here to pull out the decodedToken
     const decodedToken = await firebaseAuth.verifyIdToken(token);
 
     const response = setAuthCookies(req.headers, {

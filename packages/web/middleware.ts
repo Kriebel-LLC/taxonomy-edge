@@ -1,6 +1,6 @@
 // middleware.ts
 import { NextRequest, NextResponse } from "next/server";
-import { authentication } from "next-firebase-auth-edge/lib/next/middleware";
+import { authMiddleware } from "next-firebase-auth-edge/lib/next/middleware";
 import { authConfig } from "@/lib/auth";
 
 export async function middleware(request: NextRequest) {
@@ -21,13 +21,17 @@ export async function middleware(request: NextRequest) {
 
   // NOTE: `/api/login` is not used here, and is instead in the dir: /pages/api/login.ts
   //       this is because the next-firebase-auth-edge middleware does not have good error handling, so we make our own
-  return authentication(request, {
+  return authMiddleware(request, {
     loginPath: "/api/login",
     logoutPath: "/api/logout",
     ...authConfig,
-    handleValidToken: async () => {
+    handleValidToken: async (_, headers) => {
       console.log("Successfully authenticated via middleware");
-      return NextResponse.next();
+      return NextResponse.next({
+        request: {
+          headers,
+        },
+      });
     },
     handleInvalidToken: async () => {
       console.log("Failed authentication via middleware");
