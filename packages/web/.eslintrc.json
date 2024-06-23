@@ -20,7 +20,7 @@
       "config": "tailwind.config.js"
     },
     "next": {
-      "rootDir": true
+      "rootDir": "packages/web/*"
     }
   },
   "overrides": [

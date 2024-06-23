@@ -25,9 +25,13 @@ export async function middleware(request: NextRequest) {
     loginPath: "/api/login",
     logoutPath: "/api/logout",
     ...authConfig,
-    handleValidToken: async () => {
+    handleValidToken: async (_, headers) => {
       console.log("Successfully authenticated via middleware");
-      return NextResponse.next();
+      return NextResponse.next({
+        request: {
+          headers,
+        },
+      });
     },
     handleInvalidToken: async () => {
       console.log("Failed authentication via middleware");
