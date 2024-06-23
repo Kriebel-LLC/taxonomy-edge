@@ -16,8 +16,6 @@
     "web:lint": "yarn workspace web lint"
   },
   "devDependencies": {
-    "typescript": "^5.0.4",
-    "vercel": "^32.4.1",
-    "wrangler": "^3.32.0"
+    "typescript": "^5.0.4"
   }
 }
